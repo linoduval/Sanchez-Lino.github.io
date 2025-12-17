@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Perfil Digital</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600&display=swap');
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(circle at top, #0a1f24, #020b0d);
+  font-family: 'Manrope', sans-serif;
+  color: #e6f7f8;
+}
+
+/* CONTENEDOR */
+.container {
+  max-width: 900px;
+  margin: 50px auto;
+  background: rgba(255,255,255,.04);
+  backdrop-filter: blur(14px);
+  border-radius: 22px;
+  border: 1px solid rgba(0,255,255,.15);
+  box-shadow: 0 40px 80px rgba(0,0,0,.6);
+  overflow: hidden;
+}
+
+/* HEADER */
+.header {
+  padding: 35px 50px;
+  background: linear-gradient(90deg, #0d3b3f, #0a5257);
+  border-bottom: 1px solid rgba(0,255,255,.2);
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
+/* CUERPO */
+.content {
+  padding: 55px;
+}
+
+/* PASOS */
+.step {
+  display: none;
+}
+
+.step.active {
+  display: block;
+}
+
+label {
+  display: block;
+  font-size: 15px;
+  margin-bottom: 14px;
+  color: #9be4e8;
+}
+
+input, select {
+  width: 70%;
+  padding: 14px 18px;
+  font-size: 15px;
+  border-radius: 10px;
+  border: 1px solid rgba(0,255,255,.25);
+  background: rgba(0,0,0,.35);
+  color: #e6f7f8;
+  outline: none;
+}
+
+input:focus, select:focus {
+  border-color: #00f5ff;
+}
+
+/* BOTONES */
+button {
+  margin-top: 35px;
+  padding: 12px 48px;
+  border-radius: 30px;
+  border: none;
+  background: linear-gradient(120deg, #00f5ff, #00c2a8);
+  color: #002b2f;
+  font-size: 13px;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: .3s;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px rgba(0,245,255,.35);
+}
+
+/* RESULTADO */
+.resultado {
+  text-align: center;
+}
+
+.icono {
+  font-size: 90px;
+  margin-bottom: 15px;
+  color: #00f5ff;
+}
+
+.mensaje {
+  font-size: 16px;
+  color: #c9f4f6;
+  margin-bottom: 40px;
+  line-height: 1.8;
+}
+
+/* DATOS */
+.datos {
+  width: 80%;
+  margin: 0 auto;
+  border-top: 1px solid rgba(0,255,255,.25);
+  padding-top: 30px;
+}
+
+.datos p {
+  margin: 10px 0;
+  font-size: 15px;
+}
+
+.volver {
+  margin-top: 45px;
+  background: none;
+  color: #00f5ff;
+  border: 1px solid #00f5ff;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="header">
+    <h1>Perfil Digital del Usuario</h1>
+  </div>
+
+  <div class="content">
+
+    <div class="step active">
+      <label>Nombre completo</label>
+      <input id="nombre">
+      <button onclick="next()">SIGUIENTE</button>
+    </div>
+
+    <div class="step">
+      <label>Fecha de nacimiento</label>
+      <input type="date" id="fecha">
+      <button onclick="next()">SIGUIENTE</button>
+    </div>
+
+    <div class="step">
+      <label>Sexo</label>
+      <select id="sexo">
+        <option value="masculino">Masculino</option>
+        <option value="femenino">Femenino</option>
+      </select>
+      <button onclick="next()">SIGUIENTE</button>
+    </div>
+
+    <div class="step">
+      <label>Tipo de sangre</label>
+      <input id="sangre">
+      <button onclick="next()">SIGUIENTE</button>
+    </div>
+
+    <div class="step">
+      <label>Altura (pulgadas)</label>
+      <input type="number" id="altura">
+      <button onclick="next()">SIGUIENTE</button>
+    </div>
+
+    <div class="step">
+      <label>Peso (kg)</label>
+      <input type="number" id="peso">
+      <button onclick="final()">FINALIZAR</button>
+    </div>
+
+    <div class="step resultado">
+      <div class="icono" id="icono"></div>
+
+      <div class="mensaje" id="mensaje"></div>
+
+      <div class="datos">
+        <p><strong>Edad:</strong> <span id="edad"></span></p>
+        <p><strong>Altura:</strong> <span id="alturaR"></span></p>
+        <p><strong>Peso:</strong> <span id="pesoR"></span></p>
+        <p><strong>Tipo de sangre:</strong> <span id="sangreR"></span></p>
+      </div>
+
+      <button class="volver" onclick="location.reload()">VOLVER</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+let paso = 0;
+const steps = document.querySelectorAll(".step");
+
+function next() {
+  steps[paso].classList.remove("active");
+  paso++;
+  steps[paso].classList.add("active");
+}
+
+function final() {
+  const nombre = document.getElementById("nombre").value;
+  const sexo = document.getElementById("sexo").value;
+  const sangre = document.getElementById("sangre").value;
+  const alturaCm = (document.getElementById("altura").value * 2.54).toFixed(1);
+  const pesoLb = (document.getElementById("peso").value * 2.20462).toFixed(1);
+
+  const fecha = new Date(document.getElementById("fecha").value);
+  const hoy = new Date();
+  let edad = hoy.getFullYear() - fecha.getFullYear();
+  if (
+    hoy.getMonth() < fecha.getMonth() ||
+    (hoy.getMonth() === fecha.getMonth() && hoy.getDate() < fecha.getDate())
+  ) edad--;
+
+  document.getElementById("icono").innerText =
+    sexo === "masculino" ? "♂" : "♀";
+
+  document.getElementById("mensaje").innerText =
+    `Hola ${nombre}, ¿cómo estás? 
+     Hemos generado tu perfil digital con éxito. 
+     A continuación puedes ver un resumen claro de tu información personal.`
+
+  document.getElementById("edad").innerText = edad + " años";
+  document.getElementById("alturaR").innerText = alturaCm + " cm";
+  document.getElementById("pesoR").innerText = pesoLb + " lb";
+  document.getElementById("sangreR").innerText = sangre;
+
+  next();
+}
+
+/* ENTER */
+document.addEventListener("keydown", e => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    if (paso < steps.length - 2) next();
+    else final();
+  }
+});
+</script>
+
+</body>
+</html>
